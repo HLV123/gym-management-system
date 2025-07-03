@@ -1,0 +1,155 @@
+flowchart TD
+    %% System Initialization
+    A[🚀 Start Gym System] --> B[💾 Load Data]
+    B --> C{Data File Exists?}
+    C -->|Yes| D[📂 Load gym_data.json]
+    C -->|No| E[🎲 Create Sample Data]
+    
+    %% Sample Data Creation
+    E --> E1[👑 Create 1 Admin]
+    E --> E2[🏃‍♂️ Create 3 Trainers]
+    E --> E3[👥 Create 10 Members]
+    E --> E4[📦 Create 4 Packages]
+    E --> E5[🏋️‍♂️ Create 10 Equipment]
+    E --> E6[📅 Create 15 Schedules]
+    
+    %% Login Flow
+    D --> F[🔑 Show Login Menu]
+    E1 --> F
+    E2 --> F
+    E3 --> F
+    E4 --> F
+    E5 --> F
+    E6 --> F
+    
+    F --> G[📋 Display 13 Users]
+    G --> H{Select User}
+    
+    %% User Authentication
+    H --> I[1. Admin - Nguyễn Văn Quản]
+    H --> J[2. Trainer - Trần Thị Hương]
+    H --> K[3. Trainer - Lê Văn Mạnh]
+    H --> L[4. Trainer - Phạm Minh Tuấn]
+    H --> M[5-13. Members 001-010]
+    H --> N[14. Exit System]
+    
+    %% Role Assignment
+    I --> O[🔒 Set Role: Admin]
+    J --> P[🔒 Set Role: Trainer]
+    K --> P
+    L --> P
+    M --> Q[🔒 Set Role: Member]
+    
+    %% Admin Dashboard
+    O --> R[📊 Admin Dashboard]
+    R --> S{Admin Menu}
+    S --> S1[👥 Manage Members]
+    S --> S2[🏃‍♂️ Manage Trainers]
+    S --> S3[🏋️‍♂️ Manage Equipment]
+    S --> S4[🔗 Assign Trainers]
+    S --> S5[💰 Revenue Report]
+    S --> S6[📊 Attendance Report]
+    S --> S7[📈 Statistics]
+    S --> S8[📤 Export CSV]
+    S --> S9[🚪 Logout]
+    
+    %% Member Management Flow
+    S1 --> S1A{Member Operations}
+    S1A --> S1A1[➕ Add Member]
+    S1A --> S1A2[❌ Remove Member]
+    S1A --> S1A3[📋 List Members]
+    S1A --> S1A4[🔄 Renew Membership]
+    
+    S1A1 --> S1A1A[📝 Enter Info]
+    S1A1A --> S1A1B[📦 Select Package]
+    S1A1B --> S1A1C[📅 Calculate Dates]
+    S1A1C --> S1A1D[💾 Save Member]
+    
+    %% Trainer Dashboard
+    P --> T[📊 Trainer Dashboard]
+    T --> U{Trainer Menu}
+    U --> U1[👥 View Assigned Members]
+    U --> U2[📅 Create Schedule]
+    U --> U3[✅ Mark Attendance]
+    U --> U4[📈 Update Progress]
+    U --> U5[🔧 Update Equipment]
+    U --> U6[📊 Attendance Report]
+    U --> U7[📤 Export Data]
+    U --> U8[🚪 Logout]
+    
+    %% Permission Check for Trainer
+    U2 --> U2A{Member Assigned?}
+    U2A -->|Yes| U2B[✅ Create Schedule]
+    U2A -->|No| U2C[❌ Access Denied]
+    
+    U3 --> U3A{Member Assigned?}
+    U3A -->|Yes| U3B[✅ Mark Attendance]
+    U3A -->|No| U3C[❌ Access Denied]
+    
+    %% Member Dashboard
+    Q --> V[📊 Member Dashboard]
+    V --> W{Member Menu}
+    W --> W1[👤 Personal Info]
+    W --> W2[📅 My Schedule]
+    W --> W3[📈 Update Progress]
+    W --> W4[🔄 Renew Package]
+    W --> W5[📊 My Attendance]
+    W --> W6[🚪 Logout]
+    
+    %% Membership Status Check
+    W1 --> W1A[📊 Check Status]
+    W1A --> W1B{Days Left}
+    W1B -->|>30| W1C[✅ Active]
+    W1B -->|7-30| W1D[⚠️ Expiring]
+    W1B -->|<7| W1E[🚨 Urgent]
+    W1B -->|0| W1F[❌ Expired]
+    
+    %% Reports Generation
+    S5 --> X[💰 Calculate Revenue]
+    X --> X1[📊 Total: 14,700,000 VND]
+    X1 --> X2[📦 By Package Analysis]
+    
+    S6 --> Y[📅 Attendance Analysis]
+    Y --> Y1[📊 Calculate Percentages]
+    Y1 --> Y2[🏆 Rank Members]
+    
+    %% Data Persistence
+    S1A1D --> Z[💾 Save to JSON]
+    U2B --> Z
+    U3B --> Z
+    W3 --> Z
+    W4 --> Z
+    
+    %% Logout Flow
+    S9 --> AA[🔓 Clear Session]
+    U8 --> AA
+    W6 --> AA
+    AA --> BB[💾 Auto Save]
+    BB --> F
+    
+    %% Exit Flow
+    N --> CC[💾 Final Save]
+    CC --> DD[👋 Goodbye]
+    
+    %% Loop Back
+    Z --> EE[🔄 Return to Menu]
+    EE --> R
+    EE --> T
+    EE --> V
+    
+    %% Styling
+    classDef startEnd fill:#e74c3c,stroke:#c0392b,stroke-width:3px,color:#fff
+    classDef process fill:#27ae60,stroke:#229954,stroke-width:2px,color:#fff
+    classDef decision fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#000
+    classDef admin fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    classDef trainer fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    classDef member fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+    classDef data fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+    
+    class A,DD startEnd
+    class B,D,E1,E2,E3,E4,E5,E6,F,G,S1A1A,S1A1B,S1A1C,S1A1D,U2B,U3B,X,X1,X2,Y,Y1,Y2,Z,AA,BB,CC,EE process
+    class C,H,S,S1A,U,U2A,U3A,W,W1B decision
+    class I,O,R,S1,S2,S3,S4,S5,S6,S7,S8,S9,S1A1,S1A2,S1A3,S1A4 admin
+    class J,K,L,P,T,U1,U2,U3,U4,U5,U6,U7,U8,U2C,U3C trainer
+    class M,Q,V,W1,W2,W3,W4,W5,W6,W1A,W1C,W1D,W1E,W1F member
+    class N,EE data

@@ -1,0 +1,224 @@
+graph TB
+    %% Entry Point
+    subgraph "🚀 APPLICATION ENTRY"
+        A[main.py<br/>🎯 Entry Point<br/>System Coordinator]
+    end
+    
+    %% Core System Controller
+    subgraph "🎮 MAIN SYSTEM CONTROLLER"
+        B[MainUI<br/>🎛️ System Controller<br/>Navigation Hub]
+        C[GymManagementSystem<br/>⚙️ Core Business Logic<br/>Permission Controller]
+    end
+    
+    %% User Interface Layer
+    subgraph "🖥️ USER INTERFACE LAYER"
+        D[LoginUI<br/>🔑 Authentication<br/>Simple Number Login]
+        E[AdminUI<br/>👑 Admin Interface<br/>Full System Control]
+        F[TrainerUI<br/>🏃‍♂️ Trainer Interface<br/>Member Management]
+        G[MemberUI<br/>👤 Member Interface<br/>Self Service]
+        H[ReportsUI<br/>📊 Reports Interface<br/>Analytics Dashboard]
+        I[BaseUI<br/>🎨 Common UI Utils<br/>Shared Components]
+    end
+    
+    %% Data Management Layer
+    subgraph "💾 DATA MANAGEMENT LAYER"
+        J[DataManager<br/>📊 Data Controller<br/>Persistence Manager]
+        
+        subgraph "🔧 DATA OPERATIONS"
+            K[create_sample_data<br/>🎲 Demo Data Generator<br/>1 Admin + 3 Trainers + 10 Members]
+            L[save_data<br/>💾 JSON Serializer<br/>UTF-8 Encoding]
+            M[load_data<br/>📂 Data Loader<br/>Auto Recovery]
+            N[export_to_csv<br/>📤 CSV Exporter<br/>Excel Compatible]
+        end
+    end
+    
+    %% Business Logic Components
+    subgraph "🏢 BUSINESS LOGIC COMPONENTS"
+        subgraph "👥 MEMBER OPERATIONS"
+            O[add_member<br/>➕ Member Creator<br/>Package Assignment]
+            P[remove_member<br/>❌ Member Remover<br/>Cascade Delete]
+            Q[renew_membership<br/>🔄 Renewal Handler<br/>Date Calculator]
+        end
+        
+        subgraph "🏃‍♂️ TRAINER OPERATIONS"
+            R[add_trainer<br/>➕ Trainer Creator<br/>Specialization Setup]
+            S[assign_member_to_trainer<br/>🔗 Assignment Manager<br/>Relationship Builder]
+        end
+        
+        subgraph "📅 SCHEDULE OPERATIONS"
+            T[create_schedule<br/>📅 Schedule Creator<br/>Exercise Planner]
+            U[mark_attendance<br/>✅ Attendance Tracker<br/>Time Recorder]
+            V[update_progress<br/>📈 Progress Updater<br/>Achievement Tracker]
+        end
+        
+        subgraph "🏋️‍♂️ EQUIPMENT OPERATIONS"
+            W[add_equipment<br/>➕ Equipment Creator<br/>Asset Manager]
+            X[update_equipment_status<br/>🔧 Status Updater<br/>Maintenance Scheduler]
+        end
+        
+        subgraph "📊 ANALYTICS OPERATIONS"
+            Y[get_revenue_report<br/>💰 Revenue Calculator<br/>Financial Analytics]
+            Z[get_attendance_report<br/>📊 Attendance Analyzer<br/>Participation Stats]
+            AA[calculate_statistics<br/>📈 Statistics Engine<br/>Performance Metrics]
+        end
+    end
+    
+    %% Data Models Layer
+    subgraph "📋 DATA MODELS LAYER"
+        subgraph "👤 USER MODELS"
+            BB[User<br/>🏗️ Base User Class<br/>Common Properties]
+            CC[Member<br/>👤 Gym Member<br/>Subscription + Progress]
+            DD[Trainer<br/>🏃‍♂️ Fitness Coach<br/>Specialization + Assignments]
+            EE[Admin<br/>👑 System Administrator<br/>Full Access Rights]
+        end
+        
+        subgraph "🏢 BUSINESS MODELS"
+            FF[GymEquipment<br/>🏋️‍♂️ Equipment Model<br/>Status + Maintenance]
+            GG[WorkoutSchedule<br/>📅 Schedule Model<br/>Training Plans]
+            HH[SubscriptionPlan<br/>📦 Package Model<br/>Pricing + Features]
+        end
+    end
+    
+    %% Storage Layer
+    subgraph "💽 STORAGE LAYER"
+        subgraph "📁 PERSISTENT STORAGE"
+            II[(gym_data.json<br/>🗃️ Main Database<br/>All System Data)]
+            JJ[(members.csv<br/>📊 Member Export<br/>Member Information)]
+            KK[(attendance.csv<br/>✅ Attendance Export<br/>Participation Records)]
+            LL[(trainers.csv<br/>🏃‍♂️ Trainer Export<br/>Staff Information)]
+            MM[(equipment.csv<br/>🏋️‍♂️ Equipment Export<br/>Asset Inventory)]
+        end
+    end
+    
+    %% Sample Data Structure
+    subgraph "🎲 SAMPLE DATA STRUCTURE"
+        subgraph "👥 USERS DATA"
+            NN[1 Admin<br/>👑 Nguyễn Văn Quản<br/>admin@fitnesszone.com]
+            OO[3 Trainers<br/>🏃‍♂️ Hương, Mạnh, Tuấn<br/>Yoga, Gym, Cardio]
+            PP[10 Members<br/>👤 member001-010<br/>Various Packages]
+        end
+        
+        subgraph "📦 BUSINESS DATA"
+            QQ[4 Packages<br/>📦 Normal, Big, VIP, Family<br/>500K - 3.5M VND]
+            RR[10 Equipment<br/>🏋️‍♂️ Treadmill, Weights, etc<br/>Various Status]
+            SS[15 Schedules<br/>📅 2-Week Planning<br/>Exercise Assignments]
+            TT[Random Attendance<br/>✅ 6-Month History<br/>Realistic Patterns]
+        end
+    end
+    
+    %% External Interfaces
+    subgraph "🔌 EXTERNAL INTERFACES"
+        UU[Terminal Console<br/>💻 Command Line UI<br/>Text-Based Interface]
+        VV[CSV Reports<br/>📊 Excel Integration<br/>Data Export]
+        WW[JSON API<br/>🔄 Data Exchange<br/>System Integration]
+    end
+    
+    %% Permission System
+    subgraph "🔒 PERMISSION & SECURITY"
+        XX[check_permission<br/>🛡️ Access Control<br/>Role-Based Security]
+        YY[Role Hierarchy<br/>📊 Permission Levels<br/>Admin > Trainer > Member]
+        ZZ[Session Management<br/>🔑 User Sessions<br/>Login/Logout Control]
+    end
+    
+    %% System Flow Connections
+    A --> B
+    B --> C
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    B --> H
+    
+    E -.-> I
+    F -.-> I
+    G -.-> I
+    H -.-> I
+    
+    C --> J
+    C --> XX
+    C --> YY
+    C --> ZZ
+    
+    J --> K
+    J --> L
+    J --> M
+    J --> N
+    
+    C --> O
+    C --> P
+    C --> Q
+    C --> R
+    C --> S
+    C --> T
+    C --> U
+    C --> V
+    C --> W
+    C --> X
+    C --> Y
+    C --> Z
+    C --> AA
+    
+    %% Model Relationships
+    BB --> CC
+    BB --> DD
+    BB --> EE
+    
+    C --> BB
+    C --> FF
+    C --> GG
+    C --> HH
+    
+    %% Storage Connections
+    L --> II
+    M --> II
+    N --> JJ
+    N --> KK
+    N --> LL
+    N --> MM
+    
+    %% Sample Data Connections
+    K --> NN
+    K --> OO
+    K --> PP
+    K --> QQ
+    K --> RR
+    K --> SS
+    K --> TT
+    
+    %% External Interface Connections
+    B --> UU
+    N --> VV
+    L --> WW
+    
+    %% Data Flow Labels
+    C -.->|manages| O
+    C -.->|controls| T
+    C -.->|tracks| U
+    C -.->|analyzes| Y
+    
+    XX -.->|validates| E
+    XX -.->|validates| F
+    XX -.->|validates| G
+    
+    %% Styling
+    classDef entryPoint fill:#e74c3c,stroke:#c0392b,stroke-width:3px,color:#fff
+    classDef controller fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    classDef uiLayer fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    classDef dataLayer fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+    classDef businessLayer fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#000
+    classDef modelLayer fill:#27ae60,stroke:#229954,stroke-width:2px,color:#fff
+    classDef storageLayer fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+    classDef sampleLayer fill:#af7ac5,stroke:#8e44ad,stroke-width:2px,color:#fff
+    classDef externalLayer fill:#f4d03f,stroke:#f1c40f,stroke-width:2px,color:#000
+    classDef securityLayer fill:#ec7063,stroke:#e74c3c,stroke-width:2px,color:#fff
+    
+    class A entryPoint
+    class B,C controller
+    class D,E,F,G,H,I uiLayer
+    class J,K,L,M,N dataLayer
+    class O,P,Q,R,S,T,U,V,W,X,Y,Z,AA businessLayer
+    class BB,CC,DD,EE,FF,GG,HH modelLayer
+    class II,JJ,KK,LL,MM storageLayer
+    class NN,OO,PP,QQ,RR,SS,TT sampleLayer
+    class UU,VV,WW externalLayer
+    class XX,YY,ZZ securityLayer

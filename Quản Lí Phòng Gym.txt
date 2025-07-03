@@ -1,0 +1,458 @@
+                   "Thiết Kế và Triển Khai Hệ Thống Quản Lý Phòng Gym (GMS)"
+Mục Tiêu            
+Phát triển một Hệ Thống Quản Lý Phòng Gym (GMS) dựa trên Python để quản lý hiệu quả:
+Đăng ký thành viên và theo dõi gói đăng ký.
+Phân quyền truy cập theo vai trò cho Admin, Huấn luyện viên và Thành viên.
+Lịch tập luyện, các gói đăng ký và theo dõi điểm danh.
+
+Tính Năng và Yêu Cầu Cần Thực Hiện
+1. Vai Trò và Kiểm Soát Truy Cập
+Admin (Quản trị viên):
+Quản lý cơ sở vật chất phòng gym, huấn luyện viên và các gói đăng ký.
+Thêm, cập nhật và xóa hồ sơ thành viên.
+Tạo báo cáo doanh thu và điểm danh.
+
+Trainer (Huấn luyện viên):
+Phân công lịch tập luyện cho thành viên.
+Theo dõi điểm danh và tiến độ của thành viên.
+
+Member (Thành viên):
+Xem lịch tập luyện và cập nhật tiến độ.
+Gia hạn đăng ký và theo dõi trạng thái của họ.
+
+2. Chức Năng Cốt Lõi
+Quản Lý Thành Viên:
+Thêm, cập nhật và xóa thành viên.
+Theo dõi thành viên đang hoạt động và đã hết hạn.
+
+Quản Lý Lịch Tập Luyện:
+Tạo và phân công lịch tập luyện cho thành viên.
+Cho phép thành viên xem và cập nhật tiến độ.
+
+Theo Dõi Điểm Danh:
+Theo dõi điểm danh hàng ngày của thành viên.
+Cung cấp báo cáo điểm danh cho huấn luyện viên và admin.
+Tạo tóm tắt điểm danh cho huấn luyện viên và admin.
+
+Tính Toán:
+Tổng doanh thu từ các gói đăng ký.
+Số lượng thành viên đang hoạt động và đã hết hạn.
+Tỷ lệ phần trăm điểm danh của thành viên.
+Thành viên có thành tích tốt nhất dựa trên tiến độ tập luyện.
+
+Lưu Trữ Dữ Liệu:
+Lưu và tải lại toàn bộ dữ liệu (thành viên, lịch trình, đăng ký, điểm danh) sử dụng CSV hoặc JSON.
+Xuất báo cáo ra CSV để chia sẻ.
+
+3. Yêu Cầu Nộp Bài
+Code: Một bản triển khai Python hoàn chỉnh của GMS.
+Tài Liệu:
+Cung cấp sơ đồ luồng để hiển thị tương tác của người dùng với hệ thống.
+Bao gồm mô tả các lớp và phương thức trong chương trình.
+Ảnh Chụp Màn Hình:
+Thể hiện tương tác theo vai trò, tạo lịch trình và theo dõi điểm danh.
+
+
+Tiêu Chí Đánh Giá
+Tính Năng và Độ Bao Phủ (40%): Bao gồm quản lý thành viên, phân quyền theo vai trò và theo dõi điểm danh.
+Chất Lượng Code (20%): Dễ đọc, module hóa và tuân thủ các nguyên tắc OOP.
+Tài Liệu (20%): Sơ đồ luồng rõ ràng và mô tả chi tiết về các lớp/phương thức trong chương trình.
+Tính Sáng Tạo và Tính Năng (20%): Các tính năng bổ sung như theo dõi tiến độ hoặc hệ thống thưởng.
+
+
+
+=====================================================================================================================================
+
+
+
+
+
+
+
+MÔ TẢ CHI TIẾT CÁC LỚP VÀ PHƯƠNG THỨC
+🏗️ KIẾN TRÚC TỔNG THỂ
+📁 Gym Management System
+├── 📄 main.py (Entry point)
+├── 📄 models.py (Data models)
+├── 📄 gym_system.py (Core business logic)
+├── 📄 data_manager.py (Data persistence)
+└── 📁 ui/ (User Interface)
+    ├── 📄 main_ui.py (Main interface controller)
+    ├── 📄 login_ui.py (Login interface)
+    ├── 📄 admin_ui.py (Admin interface)
+    ├── 📄 trainer_ui.py (Trainer interface)
+    ├── 📄 member_ui.py (Member interface)
+    ├── 📄 reports_ui.py (Reports interface)
+    └── 📄 base_ui.py (Base UI utilities)
+
+📊 MODELS.PY - CÁC LỚP DỮ LIỆU
+🔹 User (Lớp cơ sở)
+pythonclass User:
+    def __init__(self, user_id, name, email, role)
+Thuộc tính:
+
+user_id: Mã định danh người dùng
+name: Tên đầy đủ
+email: Email liên lạc
+role: Vai trò ("Admin", "Trainer", "Member")
+
+👤 Member (Kế thừa User)
+pythonclass Member(User):
+    def __init__(self, user_id, name, email, phone, subscription_plan, 
+                 subscription_start, subscription_end, gender="", age=0)
+Thuộc tính bổ sung:
+
+phone: Số điện thoại
+gender: Giới tính
+age: Tuổi
+subscription_plan: Gói đăng ký
+subscription_start/end: Ngày bắt đầu/kết thúc
+workout_progress: Dictionary {bài_tập: tiến_độ}
+attendance_records: List các ngày điểm danh
+training_progress_status: Đánh giá tổng thể
+
+Phương thức:
+
+✅ is_membership_active() → bool: Kiểm tra gói còn hiệu lực
+✅ get_membership_status() → str: Trạng thái ("Mới đăng ký", "Sắp hết hạn"...)
+✅ get_remaining_days() → int: Số ngày còn lại
+✅ add_attendance_record(date, time): Ghi nhận điểm danh
+✅ update_workout_progress(exercise, progress): Cập nhật tiến độ
+
+🏃‍♂️ Trainer (Kế thừa User)
+pythonclass Trainer(User):
+    def __init__(self, user_id, name, email, specialization)
+Thuộc tính bổ sung:
+
+specialization: Chuyên môn
+assigned_members: List ID thành viên được phân công
+
+Phương thức:
+
+✅ assign_member(member_id): Phân công thành viên
+✅ remove_member(member_id): Xóa thành viên khỏi danh sách
+
+🔑 Admin (Kế thừa User)
+pythonclass Admin(User):
+    def __init__(self, user_id, name, email)
+Mô tả: Lớp đơn giản cho quản trị viên, kế thừa tất cả từ User.
+🏋️‍♂️ GymEquipment
+pythonclass GymEquipment:
+    def __init__(self, equipment_id, name, quantity, status="Mới", maintenance_schedule="")
+Thuộc tính:
+
+equipment_id: Mã thiết bị
+name: Tên thiết bị
+quantity: Số lượng
+status: Trạng thái ("Mới", "Đang sử dụng", "Cần bảo trì", "Hỏng")
+maintenance_schedule: Lịch bảo trì
+
+📅 WorkoutSchedule
+pythonclass WorkoutSchedule:
+    def __init__(self, schedule_id, member_id, trainer_id, date, time, exercises)
+Thuộc tính:
+
+schedule_id: Mã lịch tập
+member_id: ID thành viên
+trainer_id: ID trainer
+date: Ngày tập
+time: Giờ tập
+exercises: List bài tập
+completed: Trạng thái hoàn thành
+
+📦 SubscriptionPlan
+pythonclass SubscriptionPlan:
+    def __init__(self, plan_id, name, duration_months, price, features)
+Thuộc tính:
+
+plan_id: Mã gói
+name: Tên gói
+duration_months: Thời gian (tháng)
+price: Giá tiền
+features: List tính năng
+
+
+⚙️ GYM_SYSTEM.PY - LOGIC NGHIỆP VỤ CHÍNH
+🎯 GymManagementSystem
+pythonclass GymManagementSystem:
+    def __init__(self)
+Thuộc tính:
+
+data: Dictionary chứa tất cả dữ liệu hệ thống
+current_user: User đang đăng nhập
+data_manager: Instance của DataManager
+
+🔐 Phương thức xác thực và phân quyền:
+✅ login(user_id) → bool
+✅ logout()
+✅ check_permission(required_role) → bool
+✅ get_users_for_login() → Dict
+Chi tiết check_permission:
+pythonrole_hierarchy = {
+    "Admin": ["Admin"],
+    "Trainer": ["Admin", "Trainer"], 
+    "Member": ["Admin", "Trainer", "Member"]
+}
+👥 Phương thức quản lý thành viên:
+✅ add_member(user_id, name, email, phone, subscription_plan, gender, age) → bool
+✅ remove_member(user_id) → bool  
+✅ renew_membership(user_id, new_plan) → bool
+Logic nghiệp vụ:
+
+Kiểm tra quyền Admin
+Validate dữ liệu đầu vào
+Tự động tính ngày hết hạn
+Cập nhật cơ sở dữ liệu
+
+🏃‍♂️ Phương thức quản lý trainer:
+✅ add_trainer(user_id, name, email, specialization) → bool
+✅ assign_member_to_trainer(trainer_id, member_id) → bool
+🏋️‍♂️ Phương thức quản lý thiết bị:
+✅ add_equipment(equipment_id, name, quantity, status) → bool
+✅ update_equipment_status(equipment_id, status) → bool
+✅ schedule_maintenance(equipment_id, date) → bool
+📅 Phương thức quản lý lịch tập:
+✅ create_schedule(member_id, trainer_id, date, time, exercises) → bool
+Logic kiểm soát:
+
+Trainer chỉ tạo lịch cho thành viên được phân công
+Validate ngày giờ hợp lệ
+
+✅ Phương thức điểm danh:
+✅ mark_attendance(member_id, date=None, time=None) → bool
+Logic nghiệp vụ:
+
+Mặc định dùng ngày/giờ hiện tại
+Trainer chỉ điểm danh cho thành viên được phân công
+Không trùng lặp điểm danh trong ngày
+
+📈 Phương thức cập nhật tiến độ:
+✅ update_progress(member_id, exercise, progress) → bool
+✅ update_training_status(member_id, status) → bool
+Phân quyền:
+
+Trainer: cập nhật cho thành viên được phân công
+Member: chỉ cập nhật cho chính mình
+
+📊 Phương thức báo cáo:
+✅ get_revenue_report() → dict
+✅ get_attendance_report(start_date, end_date) → dict  
+✅ calculate_statistics() → dict
+Chi tiết get_revenue_report:
+pythonreturn {
+    "total_revenue": tổng_doanh_thu,
+    "total_members": tổng_thành_viên,
+    "active_members": thành_viên_hoạt_động,
+    "expired_members": thành_viên_hết_hạn,
+    "revenue_by_plan": {gói: {count, revenue}}
+}
+Chi tiết get_attendance_report:
+pythonreturn {
+    member_id: {
+        "name": tên,
+        "attendance_days": số_ngày_tập,
+        "total_days": tổng_ngày_trong_kỳ,
+        "attendance_percentage": tỷ_lệ_%,
+        "subscription_plan": gói_đăng_ký,
+        "status": trạng_thái
+    }
+}
+📤 Phương thức xuất dữ liệu:
+✅ export_to_csv(data_type, filename, format_type) → bool
+
+💾 DATA_MANAGER.PY - QUẢN LÝ DỮ LIỆU
+📁 DataManager
+pythonclass DataManager:
+    def create_sample_data() → dict
+    def save_data(data, filename) → bool
+    def load_data(filename) → dict
+    def export_to_csv(data, data_type, filename, format_type) → bool
+🎲 create_sample_data():
+Tạo dữ liệu mẫu phong phú:
+
+1 Admin: Nguyễn Văn Quản
+3 Trainers với chuyên môn khác nhau
+10 Members với thông tin đa dạng
+4 Subscription Plans (normal, big, vip, family)
+10 Gym Equipments với trạng thái thực tế
+15 Workout Schedules trong 2 tuần
+Random attendance records (6 tháng)
+Random workout progress
+
+💾 save_data(data, filename):
+Chức năng:
+
+Serialize objects thành JSON
+Encoding UTF-8 hỗ trợ tiếng Việt
+Error handling và logging
+
+📂 load_data(filename):
+Chức năng:
+
+Load JSON và recreate objects
+Fallback tạo sample data nếu file không tồn tại
+Maintain object relationships
+
+📊 export_to_csv():
+Hỗ trợ xuất:
+
+members: Danh sách thành viên đầy đủ
+attendance: Dữ liệu điểm danh chi tiết
+trainers: Thông tin trainers
+equipment: Danh sách thiết bị
+Format: UTF-8 và Excel/WPS (UTF-8-BOM)
+
+
+🖥️ UI PACKAGE - GIAO DIỆN NGƯỜI DÙNG
+🎨 BaseUI (ui/base_ui.py)
+pythonclass BaseUI:
+    def clear_screen()
+    def print_header(title)
+    def print_section(title)
+    def get_choice(max_choice, prompt) → int
+    def confirm_action(message) → bool
+    def show_members_list(members, show_status)
+    def wait_for_enter(message)
+    def show_error/success/info/warning(message)
+🎮 MainUI (ui/main_ui.py)
+pythonclass MainUI(BaseUI):
+    def run()                           # Main application loop
+    def show_main_menu()               # Display role-based menu
+    def handle_choice(choice) → bool   # Route to appropriate handler
+    def handle_admin_choice(choice)    # Admin menu routing
+    def handle_trainer_choice(choice)  # Trainer menu routing  
+    def handle_member_choice(choice)   # Member menu routing
+    def logout() → bool               # Logout process
+🔑 LoginUI (ui/login_ui.py)
+pythonclass LoginUI(BaseUI):
+    def show_login_menu()    # Display numbered user list
+    def handle_login() → bool # Simple number-based login
+Tính năng:
+
+Menu đăng nhập bằng số thứ tự
+Tự động phân loại Admin/Trainer/Member
+Không cần password (demo system)
+
+🔑 AdminUI (ui/admin_ui.py)
+pythonclass AdminUI(BaseUI):
+    # Member Management
+    def manage_members()
+    def add_member()
+    def remove_member()        # With selection menu
+    def list_members()         # Categorized by status
+    def renew_membership()     # Admin renewal for members
+    
+    # Trainer Management  
+    def manage_trainers()
+    def add_trainer()
+    def list_trainers()
+    
+    # Equipment Management
+    def manage_equipment()
+    def add_equipment()
+    def list_equipment()       # Grouped by status
+    
+    # Assignment
+    def assign_trainer()       # Assign members to trainers
+🏃‍♂️ TrainerUI (ui/trainer_ui.py)
+pythonclass TrainerUI(BaseUI):
+    def show_assigned_members()    # Only assigned members
+    def create_schedule()          # Create workout schedule
+    def mark_attendance()          # Mark attendance with datetime
+    def update_member_progress()   # Update exercise progress + status
+    def update_equipment()         # Update equipment status/maintenance
+Logic kiểm soát:
+
+Chỉ thao tác với thành viên được phân công
+Exercises phù hợp với specialization
+
+👤 MemberUI (ui/member_ui.py)
+pythonclass MemberUI(BaseUI):
+    def show_member_info()     # Personal info + subscription status
+    def show_member_schedule() # Personal workout schedule
+    def update_own_progress()  # Self-update workout progress
+    def renew_membership()     # Self-service renewal
+Tính năng:
+
+Cảnh báo khi gói sắp hết hạn
+Chỉ sửa thông tin của chính mình
+
+📊 ReportsUI (ui/reports_ui.py)
+pythonclass ReportsUI(BaseUI):
+    def show_revenue_report()     # Revenue breakdown by plan
+    def show_attendance_report()  # Attendance % with time range
+    def show_statistics()         # Overall system statistics
+    def export_data_menu()        # CSV export wizard
+Tính năng nâng cao:
+
+Time range selection (7/30 days, custom)
+Multiple export formats
+Ranking và color coding
+
+
+🔄 LUỒNG DỮ LIỆU CHI TIẾT
+📥 Luồng đăng nhập:
+1. main.py → MainUI.run()
+2. LoginUI.handle_login()
+3. GymSystem.login(user_id)
+4. Set current_user và phân quyền
+5. Route đến UI tương ứng
+🔄 Luồng xử lý nghiệp vụ:
+1. UI nhận input từ user
+2. Validate input cơ bản
+3. Call GymSystem methods
+4. GymSystem.check_permission()
+5. Thực hiện business logic
+6. Update data structures
+7. DataManager.save_data() (auto)
+8. Return result to UI
+9. Display success/error message
+💾 Luồng persistence:
+1. Khởi tạo: DataManager.load_data()
+2. Runtime: In-memory operations
+3. Thoát: DataManager.save_data()
+4. Export: DataManager.export_to_csv()
+
+🎯 DESIGN PATTERNS SỬ DỤNG
+🏗️ MVC (Model-View-Controller):
+
+Model: models.py (data structures)
+View: ui/ package (user interfaces)
+Controller: gym_system.py (business logic)
+
+🔗 Strategy Pattern:
+
+BaseUI làm interface chung
+AdminUI, TrainerUI, MemberUI implement cụ thể
+
+🏭 Factory Pattern:
+
+DataManager.create_sample_data()
+Tự động tạo objects với relationships
+
+🎭 Facade Pattern:
+
+GymManagementSystem che giấu complexity
+UI chỉ cần call high-level methods
+
+
+⚡ PERFORMANCE VÀ SCALABILITY
+🚀 Tối ưu hóa:
+
+In-memory operations cho tốc độ
+Lazy loading cho large datasets
+Efficient data structures (dict lookup)
+
+📈 Khả năng mở rộng:
+
+Modular architecture
+Clear separation of concerns
+Easy to add new roles/features
+Database-ready design
+
+🛡️ Error Handling:
+
+Try-catch ở tất cả I/O operations
+Graceful degradation
+User-friendly error messages
+Data validation ở multiple layers

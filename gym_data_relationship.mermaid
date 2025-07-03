@@ -1,0 +1,126 @@
+erDiagram
+    %% Core User Entity
+    USER {
+        string user_id PK "Mã định danh"
+        string name "Họ tên"
+        string email "Email"
+        string role "Vai trò"
+    }
+    
+    %% Member Entity
+    MEMBER {
+        string user_id PK "Kế thừa từ User"
+        string phone "Số điện thoại"
+        string gender "Giới tính"
+        int age "Tuổi"
+        string subscription_plan FK "Gói đăng ký"
+        date subscription_start "Ngày bắt đầu"
+        date subscription_end "Ngày kết thúc"
+        dict workout_progress "Tiến độ tập luyện"
+        list attendance_records "Lịch sử điểm danh"
+        string training_status "Trạng thái tập luyện"
+    }
+    
+    %% Trainer Entity
+    TRAINER {
+        string user_id PK "Kế thừa từ User"
+        string specialization "Chuyên môn"
+        list assigned_members "Thành viên được phân công"
+    }
+    
+    %% Admin Entity
+    ADMIN {
+        string user_id PK "Kế thừa từ User"
+    }
+    
+    %% Subscription Plan Entity
+    SUBSCRIPTION_PLAN {
+        string plan_id PK "Mã gói"
+        string name "Tên gói"
+        int duration_months "Thời gian (tháng)"
+        float price "Giá tiền"
+        list features "Tính năng"
+    }
+    
+    %% Gym Equipment Entity
+    GYM_EQUIPMENT {
+        string equipment_id PK "Mã thiết bị"
+        string name "Tên thiết bị"
+        int quantity "Số lượng"
+        string status "Trạng thái"
+        string maintenance_schedule "Lịch bảo trì"
+    }
+    
+    %% Workout Schedule Entity
+    WORKOUT_SCHEDULE {
+        string schedule_id PK "Mã lịch tập"
+        string member_id FK "ID thành viên"
+        string trainer_id FK "ID trainer"
+        date date "Ngày tập"
+        time time "Giờ tập"
+        list exercises "Bài tập"
+        boolean completed "Hoàn thành"
+    }
+    
+    %% Attendance Record (Virtual Entity)
+    ATTENDANCE_RECORD {
+        string member_id FK "ID thành viên"
+        date attendance_date "Ngày điểm danh"
+        time attendance_time "Giờ điểm danh"
+        string recorded_by "Người ghi nhận"
+    }
+    
+    %% Progress Record (Virtual Entity)
+    PROGRESS_RECORD {
+        string member_id FK "ID thành viên"
+        string exercise "Bài tập"
+        string progress "Tiến độ"
+        date last_updated "Cập nhật cuối"
+        string updated_by "Người cập nhật"
+    }
+    
+    %% Revenue Report (Virtual Entity)
+    REVENUE_REPORT {
+        date report_date "Ngày báo cáo"
+        float total_revenue "Tổng doanh thu"
+        int active_members "Thành viên hoạt động"
+        int expired_members "Thành viên hết hạn"
+        dict revenue_by_plan "Doanh thu theo gói"
+    }
+    
+    %% Statistics (Virtual Entity)
+    STATISTICS {
+        int total_members "Tổng thành viên"
+        int total_trainers "Tổng trainer"
+        int total_equipment "Tổng thiết bị"
+        float avg_attendance "Điểm danh trung bình"
+        string best_member "Thành viên xuất sắc"
+        dict plan_stats "Thống kê theo gói"
+    }
+    
+    %% Relationships
+    USER ||--o{ MEMBER : "extends"
+    USER ||--o{ TRAINER : "extends"
+    USER ||--o{ ADMIN : "extends"
+    
+    MEMBER }o--|| SUBSCRIPTION_PLAN : "subscribes"
+    MEMBER ||--o{ WORKOUT_SCHEDULE : "has_schedule"
+    MEMBER ||--o{ ATTENDANCE_RECORD : "has_attendance"
+    MEMBER ||--o{ PROGRESS_RECORD : "tracks_progress"
+    
+    TRAINER ||--o{ MEMBER : "manages"
+    TRAINER ||--o{ WORKOUT_SCHEDULE : "creates"
+    TRAINER ||--o{ ATTENDANCE_RECORD : "records"
+    TRAINER ||--o{ PROGRESS_RECORD : "updates"
+    
+    ADMIN ||--o{ MEMBER : "administers"
+    ADMIN ||--o{ TRAINER : "manages"
+    ADMIN ||--o{ GYM_EQUIPMENT : "maintains"
+    ADMIN ||--o{ SUBSCRIPTION_PLAN : "manages"
+    ADMIN ||--o{ REVENUE_REPORT : "generates"
+    ADMIN ||--o{ STATISTICS : "views"
+    
+    SUBSCRIPTION_PLAN ||--o{ REVENUE_REPORT : "contributes_to"
+    MEMBER ||--o{ STATISTICS : "counted_in"
+    TRAINER ||--o{ STATISTICS : "counted_in"
+    GYM_EQUIPMENT ||--o{ STATISTICS : "counted_in"

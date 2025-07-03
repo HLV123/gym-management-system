@@ -1,0 +1,207 @@
+flowchart TD
+    %% ADMIN DETAILED PROCESSES
+    subgraph "👑 ADMIN PROCESSES"
+        direction TB
+        
+        %% Member Management Process
+        subgraph "👥 MEMBER MANAGEMENT"
+            A1[📝 Input Member Data] --> A2[📋 Validate Information]
+            A2 --> A3{Valid Data?}
+            A3 -->|No| A4[❌ Show Error Message]
+            A4 --> A1
+            A3 -->|Yes| A5[📦 Select Package Type]
+            A5 --> A6[💰 Display Package Price]
+            A6 --> A7[📅 Calculate End Date]
+            A7 --> A8[💾 Save to Database]
+            A8 --> A9[✅ Success Message]
+            
+            A10[🗑️ Select Member to Remove] --> A11[⚠️ Confirm Deletion]
+            A11 --> A12{Confirm?}
+            A12 -->|No| A13[❌ Cancel Operation]
+            A12 -->|Yes| A14[🔗 Remove from Trainers]
+            A14 --> A15[💾 Delete from Database]
+            A15 --> A16[✅ Member Removed]
+        end
+        
+        %% Trainer Assignment Process
+        subgraph "🔗 TRAINER ASSIGNMENT"
+            B1[📋 List Available Trainers] --> B2[👤 Show Trainer Specialization]
+            B2 --> B3[📋 List All Members]
+            B3 --> B4[👥 Select Trainer & Member]
+            B4 --> B5[🔍 Check Current Assignment]
+            B5 --> B6{Already Assigned?}
+            B6 -->|Yes| B7[⚠️ Show Warning]
+            B6 -->|No| B8[🔗 Create Assignment]
+            B8 --> B9[💾 Update Trainer's List]
+            B9 --> B10[✅ Assignment Complete]
+        end
+        
+        %% Revenue Report Process
+        subgraph "💰 REVENUE REPORTING"
+            C1[📊 Collect All Members] --> C2[💰 Calculate Package Prices]
+            C2 --> C3[📦 Group by Package Type]
+            C3 --> C4[🧮 Sum Total Revenue]
+            C4 --> C5[📈 Calculate Percentages]
+            C5 --> C6[👥 Count Active/Expired]
+            C6 --> C7[📋 Generate Report]
+            C7 --> C8[📤 Display Results]
+        end
+    end
+    
+    %% TRAINER DETAILED PROCESSES
+    subgraph "🏃‍♂️ TRAINER PROCESSES"
+        direction TB
+        
+        %% Schedule Creation Process
+        subgraph "📅 SCHEDULE CREATION"
+            D1[👥 Check Assigned Members] --> D2{Has Members?}
+            D2 -->|No| D3[❌ No Members Assigned]
+            D2 -->|Yes| D4[📋 Select Member]
+            D4 --> D5[📅 Choose Date & Time]
+            D5 --> D6[🏋️‍♂️ Select Exercises]
+            D6 --> D7[🎯 Match Trainer Specialization]
+            D7 --> D8[💾 Save Schedule]
+            D8 --> D9[✅ Schedule Created]
+        end
+        
+        %% Attendance Marking Process
+        subgraph "✅ ATTENDANCE MARKING"
+            E1[👥 List Assigned Members] --> E2[👤 Select Member]
+            E2 --> E3[🔍 Check Assignment]
+            E3 --> E4{Member Assigned?}
+            E4 -->|No| E5[❌ Access Denied]
+            E4 -->|Yes| E6[📅 Check Today's Date]
+            E6 --> E7{Already Marked?}
+            E7 -->|Yes| E8[⚠️ Already Attended]
+            E7 -->|No| E9[✅ Mark Attendance]
+            E9 --> E10[🕐 Record Time]
+            E10 --> E11[💾 Save Record]
+            E11 --> E12[✅ Attendance Saved]
+        end
+        
+        %% Progress Update Process
+        subgraph "📈 PROGRESS TRACKING"
+            F1[👥 Select Assigned Member] --> F2[📊 View Current Progress]
+            F2 --> F3[🏋️‍♂️ Enter Exercise Name]
+            F3 --> F4[📈 Enter Progress Data]
+            F4 --> F5[🎯 Update Training Status]
+            F5 --> F6{Status Options}
+            F6 --> F7[⭐ Xuất sắc]
+            F6 --> F8[✅ Tốt]
+            F6 --> F9[📊 Bình thường]
+            F6 --> F10[⚠️ Cần cải thiện]
+            F7 --> F11[💾 Save Progress]
+            F8 --> F11
+            F9 --> F11
+            F10 --> F11
+            F11 --> F12[✅ Progress Updated]
+        end
+    end
+    
+    %% MEMBER DETAILED PROCESSES
+    subgraph "👤 MEMBER PROCESSES"
+        direction TB
+        
+        %% Personal Info Check Process
+        subgraph "📊 PERSONAL INFO"
+            G1[👤 Load Member Data] --> G2[📅 Check Subscription End]
+            G2 --> G3[🧮 Calculate Days Left]
+            G3 --> G4{Days Remaining}
+            G4 -->|> 30| G5[✅ Status: Active]
+            G4 -->|7-30| G6[⚠️ Status: Expiring Soon]
+            G4 -->|< 7| G7[🚨 Status: Urgent Renewal]
+            G4 -->|≤ 0| G8[❌ Status: Expired]
+            G5 --> G9[📊 Display Full Info]
+            G6 --> G9
+            G7 --> G9
+            G8 --> G9
+        end
+        
+        %% Self Progress Update Process
+        subgraph "📈 SELF PROGRESS"
+            H1[📊 View Current Progress] --> H2[🏋️‍♂️ Enter Exercise]
+            H2 --> H3[📈 Enter Achievement]
+            H3 --> H4[📅 Add Timestamp]
+            H4 --> H5[💾 Save Progress]
+            H5 --> H6[✅ Progress Saved]
+        end
+        
+        %% Membership Renewal Process
+        subgraph "🔄 RENEWAL PROCESS"
+            I1[📦 View Current Package] --> I2[📅 Check Expiry Date]
+            I2 --> I3[📋 Show Available Packages]
+            I3 --> I4[💰 Display Package Prices]
+            I4 --> I5[📦 Select New Package]
+            I5 --> I6[📅 Calculate New End Date]
+            I6 --> I7{Current Active?}
+            I7 -->|Yes| I8[➕ Extend from Current End]
+            I7 -->|No| I9[🆕 Start from Today]
+            I8 --> I10[💾 Update Subscription]
+            I9 --> I10
+            I10 --> I11[✅ Renewal Complete]
+        end
+    end
+    
+    %% SYSTEM PROCESSES
+    subgraph "⚙️ SYSTEM PROCESSES"
+        direction TB
+        
+        %% Data Persistence Process
+        subgraph "💾 DATA MANAGEMENT"
+            J1[📊 Collect All Data] --> J2[🔄 Serialize Objects]
+            J2 --> J3[📝 Convert to JSON]
+            J3 --> J4[💾 Write to File]
+            J4 --> J5[✅ Data Saved]
+            
+            J6[📂 Read File] --> J7{File Exists?}
+            J7 -->|No| J8[🎲 Create Sample Data]
+            J7 -->|Yes| J9[📖 Parse JSON]
+            J9 --> J10[🔄 Recreate Objects]
+            J10 --> J11[✅ Data Loaded]
+        end
+        
+        %% CSV Export Process
+        subgraph "📤 CSV EXPORT"
+            K1[📋 Select Data Type] --> K2{Export Type}
+            K2 --> K3[👥 Members Data]
+            K2 --> K4[✅ Attendance Data]
+            K2 --> K5[🏃‍♂️ Trainers Data]
+            K2 --> K6[🏋️‍♂️ Equipment Data]
+            K3 --> K7[📊 Format Member Info]
+            K4 --> K8[📊 Format Attendance Records]
+            K5 --> K9[📊 Format Trainer Info]
+            K6 --> K10[📊 Format Equipment Info]
+            K7 --> K11[📝 Write CSV Headers]
+            K8 --> K11
+            K9 --> K11
+            K10 --> K11
+            K11 --> K12[📤 Export File]
+            K12 --> K13[✅ Export Complete]
+        end
+    end
+    
+    %% Cross-process connections
+    A8 --> J1
+    B9 --> J1
+    D8 --> J1
+    E11 --> J1
+    F11 --> J1
+    H5 --> J1
+    I10 --> J1
+    
+    %% Styling
+    classDef adminProcess fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    classDef trainerProcess fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    classDef memberProcess fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+    classDef systemProcess fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+    classDef decision fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#000
+    classDef success fill:#27ae60,stroke:#229954,stroke-width:2px,color:#fff
+    classDef error fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+    
+    class A1,A2,A5,A6,A7,A8,A10,A11,A14,A15,B1,B2,B3,B4,B5,B8,B9,C1,C2,C3,C4,C5,C6,C7,C8 adminProcess
+    class D1,D4,D5,D6,D7,D8,E1,E2,E3,E6,E9,E10,E11,F1,F2,F3,F4,F5,F11 trainerProcess
+    class G1,G2,G3,G9,H1,H2,H3,H4,H5,I1,I2,I3,I4,I5,I6,I8,I9,I10 memberProcess
+    class J1,J2,J3,J4,J6,J8,J9,J10,K1,K3,K4,K5,K6,K7,K8,K9,K10,K11,K12 systemProcess
+    class A3,A12,B6,D2,E4,E7,F6,G4,I7,J7,K2 decision
+    class A9,A16,B10,D9,E12,F12,G5,H6,I11,J5,J11,K13 success
+    class A4,A13,D3,E5,E8 error
